@@ -1,4 +1,4 @@
-name: Build
+name: Java CI with Gradle
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -31,16 +31,3 @@ jobs:
 
       - name: Build and test
         run: ./gradlew build
-
-      - name: Commit and push changes
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "chore: update build outputs [skip ci]"
-          git push origin HEAD:main
